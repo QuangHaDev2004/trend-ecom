@@ -1,6 +1,7 @@
 import { ProductsType } from "@/types";
 import { Categories } from "../Categories/Categories";
 import { ProductCard } from "./ProductCard";
+import Link from "next/link";
 
 // TEMPORARY
 const products: ProductsType = [
@@ -123,7 +124,7 @@ const products: ProductsType = [
   },
 ];
 
-export const ProductList = () => {
+export const ProductList = ({ category }: { category: string }) => {
   return (
     <>
       <div className="">
@@ -133,6 +134,12 @@ export const ProductList = () => {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
+        <Link
+          href={category ? `/products?category=${category}` : "/products"}
+          className="mt-4 flex justify-end text-sm font-semibold underline text-gray-500"
+        >
+          Xem tất cả
+        </Link>
       </div>
     </>
   );
