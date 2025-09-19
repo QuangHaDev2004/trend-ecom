@@ -21,6 +21,6 @@
   padding-right: 16px;
 }
 
-input {
+input, select, button {
   outline: none;
 }
