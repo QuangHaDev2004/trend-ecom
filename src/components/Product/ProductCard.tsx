@@ -1,9 +1,11 @@
 "use client";
 
 import { ProductType } from "@/types";
+import { Select } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa6";
 import { FiShoppingCart } from "react-icons/fi";
 
 export const ProductCard = ({ product }: { product: ProductType }) => {
@@ -50,24 +52,26 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
             {/* SIZE */}
             <div className="flex flex-col gap-1">
               <span className="text-gray-500">Kích cỡ</span>
-              <select
-                name="size"
-                id="size"
-                className="cursor-pointer rounded-md px-2 py-1 ring ring-gray-300"
-                onChange={(e) =>
-                  handleProductType({ type: "size", value: e.target.value })
-                }
-              >
-                {product.sizes.map((size) => (
-                  <option
-                    value={size}
-                    key={size}
-                    className="bg-gray-500 text-white"
-                  >
-                    {size.toUpperCase()}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <Select
+                  name="size"
+                  className="cursor-pointer appearance-none rounded-sm py-1 pr-8 pl-2 ring ring-gray-300"
+                  onChange={(e) =>
+                    handleProductType({ type: "size", value: e.target.value })
+                  }
+                >
+                  {product.sizes.map((size) => (
+                    <option
+                      value={size}
+                      key={size}
+                      className="bg-gray-500 text-white"
+                    >
+                      {size.toUpperCase()}
+                    </option>
+                  ))}
+                </Select>
+                <FaChevronDown className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[10px]" />
+              </div>
             </div>
             {/* COLOR */}
             <div className="flex flex-col gap-1">
