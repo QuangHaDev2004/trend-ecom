@@ -20,7 +20,7 @@ export default async function Home({
           className="object-cover"
         />
       </div>
-      <ProductList category={category} />
+      <ProductList category={category} params="homepage" />
     </div>
   );
 }

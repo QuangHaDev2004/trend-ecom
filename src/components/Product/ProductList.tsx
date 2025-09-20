@@ -2,6 +2,7 @@ import { ProductsType } from "@/types";
 import { Categories } from "../Categories/Categories";
 import { ProductCard } from "./ProductCard";
 import Link from "next/link";
+import { Filter } from "../Filter/Filter";
 
 // TEMPORARY
 const products: ProductsType = [
@@ -124,11 +125,18 @@ const products: ProductsType = [
   },
 ];
 
-export const ProductList = ({ category }: { category: string }) => {
+export const ProductList = ({
+  category,
+  params,
+}: {
+  category: string;
+  params: "homepage" | "products";
+}) => {
   return (
     <>
       <div className="">
         <Categories />
+        {params === "products" && <Filter />}
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -136,7 +144,7 @@ export const ProductList = ({ category }: { category: string }) => {
         </div>
         <Link
           href={category ? `/products?category=${category}` : "/products"}
-          className="mt-4 flex justify-end text-sm font-semibold underline text-gray-500"
+          className="mt-4 flex justify-end text-sm font-semibold text-gray-500 underline"
         >
           Xem tất cả
         </Link>
