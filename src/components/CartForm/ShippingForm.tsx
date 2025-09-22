@@ -29,7 +29,7 @@ export const ShippingForm = ({
   return (
     <>
       <div className="flex flex-col gap-8">
-        <h1 className="font-bold">Shipping Form</h1>
+        <h1 className="font-bold">Thông tin giao hàng</h1>
         <form
           className="flex flex-col gap-4"
           onSubmit={handleSubmit(handleShippingForm)}

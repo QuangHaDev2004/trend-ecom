@@ -1,7 +1,9 @@
 export const PaymentForm = () => {
   return (
     <>
-      <h1>Payment Form</h1>
+      <div className="flex flex-col gap-8">
+        <h1 className="font-bold">Thông tin thanh toán</h1>
+      </div>
     </>
   );
 };
