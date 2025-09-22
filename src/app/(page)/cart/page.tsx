@@ -2,7 +2,7 @@
 
 import { PaymentForm } from "@/components/CartForm/PaymentForm";
 import { ShippingForm } from "@/components/CartForm/ShippingForm";
-import { CartItemsType } from "@/types";
+import { CartItemsType, ShippingFormInputs } from "@/types";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -83,7 +83,7 @@ const cartItem: CartItemsType = [
 export default function CartPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [shippingForm, setShippingForm] = useState();
+  const [shippingForm, setShippingForm] = useState<ShippingFormInputs | null>(null);
 
   const activeStep = parseInt(searchParams.get("step") || "1");
 
@@ -158,7 +158,7 @@ export default function CartPage() {
                 ))}
               </>
             ) : activeStep === 2 ? (
-              <ShippingForm />
+              <ShippingForm setShippingForm={setShippingForm} />
             ) : activeStep === 3 && shippingForm ? (
               <PaymentForm />
             ) : (
@@ -168,7 +168,7 @@ export default function CartPage() {
             )}
           </div>
           {/* DETAIL */}
-          <div className="flex w-full flex-col gap-8 rounded-lg border border-gray-100 p-8 shadow-lg lg:w-5/12">
+          <div className="flex h-max w-full flex-col gap-8 rounded-lg border border-gray-100 p-8 shadow-lg lg:w-5/12">
             <h2 className="font-bold">Chi tiết giỏ hàng</h2>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between text-sm">
