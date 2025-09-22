@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SearchBar } from "./SearchBar";
 import { FaRegBell } from "react-icons/fa6";
-import { FiShoppingCart } from "react-icons/fi";
+import { ShoppingCartIcon } from "./ShoppingCartIcon";
 
 export const Navbar = () => {
   return (
@@ -26,7 +26,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-6">
           <SearchBar />
           <FaRegBell className="h-5 w-5 cursor-pointer text-gray-600" />
-          <FiShoppingCart className="h-5 w-5 cursor-pointer text-gray-600" />
+          <ShoppingCartIcon />
           <Link href="/login" className="font-semibold">
             Đăng nhập
           </Link>
