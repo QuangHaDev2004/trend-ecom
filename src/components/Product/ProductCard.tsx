@@ -1,5 +1,6 @@
 "use client";
 
+import useCartStore from "@/store/cartStore";
 import { ProductType } from "@/types";
 import { Select } from "@headlessui/react";
 import Image from "next/image";
@@ -7,12 +8,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa6";
 import { FiShoppingCart } from "react-icons/fi";
+import { toast } from "sonner";
 
 export const ProductCard = ({ product }: { product: ProductType }) => {
   const [productType, setProductType] = useState({
     size: product.sizes[0],
     color: product.colors[0],
   });
+
+  const { addToCart } = useCartStore();
 
   const handleProductType = ({
     type,
@@ -25,6 +29,16 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
       ...prev,
       [type]: value,
     }));
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+      ...product,
+      quantity: 1,
+      selectedSize: productType.size,
+      selectedColor: productType.color,
+    });
+    toast.success("Thêm sản phẩm thành công!");
   };
 
   return (
@@ -97,9 +111,12 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
           {/* PRICE AND ADD TO CART BUTTON */}
           <div className="flex items-center justify-between">
             <p className="font-semibold">${product.price.toFixed(2)}</p>
-            <button className="flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm font-medium shadow-lg ring-1 ring-gray-200 transition-all duration-300 hover:bg-black hover:text-white">
+            <button
+              onClick={handleAddToCart}
+              className="flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm font-medium shadow-lg ring-1 ring-gray-200 transition-all duration-300 hover:bg-black hover:text-white"
+            >
               <FiShoppingCart className="text-[16px]" />
-              Add to Cart
+              Thêm vào giỏ
             </button>
           </div>
         </div>
