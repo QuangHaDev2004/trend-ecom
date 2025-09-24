@@ -5,7 +5,9 @@ import Link from "next/link";
 import { FiShoppingCart } from "react-icons/fi";
 
 export const ShoppingCartIcon = () => {
-  const { cart } = useCartStore();
+  const { cart, hasHydrated } = useCartStore();
+
+  if (!hasHydrated) return null;
 
   return (
     <>

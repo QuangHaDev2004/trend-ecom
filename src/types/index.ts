@@ -36,6 +36,7 @@ export type ShippingFormInputs = z.infer<typeof shippingFormSchema>;
 
 export type CartStoreStateType = {
   cart: CartItemsType;
+  hasHydrated: boolean;
 };
 
 export type CartStoreActionsType = {
