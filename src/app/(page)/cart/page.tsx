@@ -2,7 +2,8 @@
 
 import { PaymentForm } from "@/components/CartForm/PaymentForm";
 import { ShippingForm } from "@/components/CartForm/ShippingForm";
-import { CartItemsType, ShippingFormInputs } from "@/types";
+import useCartStore from "@/store/cartStore";
+import { ShippingFormInputs } from "@/types";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -23,69 +24,14 @@ const steps = [
   },
 ];
 
-const cartItem: CartItemsType = [
-  {
-    id: 1,
-    name: "Áo thun Adidas CoreFit",
-    shortDescription:
-      "Chiếc áo thun thoải mái, thiết kế thể thao phù hợp cho mọi hoạt động.",
-    description:
-      "Áo thun Adidas CoreFit mang lại cảm giác thoải mái tối đa. Với chất liệu cao cấp, thoáng khí, dễ phối đồ và phù hợp cho cả luyện tập lẫn mặc hằng ngày.",
-    price: 39.9,
-    sizes: ["s", "m", "l", "xl", "xxl"],
-    colors: ["gray", "purple", "green"],
-    images: {
-      gray: "/assets/images/products/1g.png",
-      purple: "/assets/images/products/1p.png",
-      green: "/assets/images/products/1gr.png",
-    },
-    quantity: 1,
-    selectedSize: "m",
-    selectedColor: "gray",
-  },
-  {
-    id: 2,
-    name: "Áo khoác Puma Ultra Warm Zip",
-    shortDescription: "Áo khoác khóa kéo giữ ấm, nhẹ nhàng và phong cách.",
-    description:
-      "Puma Ultra Warm Zip với thiết kế tiện lợi, khóa kéo dễ sử dụng, chất liệu ấm áp nhưng thoáng khí. Lý tưởng cho mùa lạnh hoặc các buổi tập ngoài trời.",
-    price: 59.9,
-    sizes: ["s", "m", "l", "xl"],
-    colors: ["gray", "green"],
-    images: {
-      gray: "/assets/images/products/2g.png",
-      green: "/assets/images/products/2gr.png",
-    },
-    quantity: 1,
-    selectedSize: "l",
-    selectedColor: "gray",
-  },
-  {
-    id: 3,
-    name: "Áo chui đầu Nike Air Essentials",
-    shortDescription: "Áo chui đầu nhẹ, thoải mái và phong cách đường phố.",
-    description:
-      "Nike Air Essentials Pullover mang lại sự thoải mái cả ngày. Thiết kế tối giản, chất liệu bền đẹp, dễ dàng kết hợp với nhiều trang phục khác nhau.",
-    price: 69.9,
-    sizes: ["s", "m", "l"],
-    colors: ["green", "blue", "black"],
-    images: {
-      green: "/assets/images/products/3gr.png",
-      blue: "/assets/images/products/3b.png",
-      black: "/assets/images/products/3bl.png",
-    },
-    quantity: 1,
-    selectedSize: "m",
-    selectedColor: "black",
-  },
-];
-
 export default function CartPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [shippingForm, setShippingForm] = useState<ShippingFormInputs | null>(null);
+  const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
 
   const activeStep = parseInt(searchParams.get("step") || "1");
+
+  const { cart, removeFormCart } = useCartStore();
 
   return (
     <>
@@ -119,10 +65,10 @@ export default function CartPage() {
             {activeStep === 1 ? (
               <>
                 <h2 className="font-bold">Sản phẩm trong giỏ</h2>
-                {cartItem.map((item) => (
+                {cart.map((item) => (
                   <div
                     className="flex items-center justify-between"
-                    key={item.id}
+                    key={item.id + item.selectedSize + item.selectedColor}
                   >
                     <div className="flex gap-8">
                       <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-gray-50">
@@ -140,7 +86,7 @@ export default function CartPage() {
                             Số lượng: {item.quantity}
                           </p>
                           <p className="text-sm font-medium text-gray-500">
-                            Kích cỡ: {item.selectedSize}
+                            Kích cỡ: {item.selectedSize.toUpperCase()}
                           </p>
                           <p className="text-sm font-medium text-gray-500">
                             Màu sắc: {item.selectedColor}
@@ -151,7 +97,10 @@ export default function CartPage() {
                         </p>
                       </div>
                     </div>
-                    <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-100 text-red-400 transition-all duration-300 hover:bg-red-200">
+                    <button
+                      onClick={() => removeFormCart(item)}
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-100 text-red-400 transition-all duration-300 hover:bg-red-200"
+                    >
                       <FaRegTrashCan className="text-[14px]" />
                     </button>
                   </div>
@@ -175,7 +124,7 @@ export default function CartPage() {
                 <p className="text-gray-500">Tạm tính</p>
                 <p className="font-semibold">
                   $
-                  {cartItem
+                  {cart
                     .reduce((acc, item) => acc + item.price * item.quantity, 0)
                     .toFixed(2)}
                 </p>
@@ -193,7 +142,7 @@ export default function CartPage() {
                 <p className="font-semibold text-gray-800">Tổng cộng</p>
                 <p className="font-semibold">
                   $
-                  {cartItem
+                  {cart
                     .reduce((acc, item) => acc + item.price * item.quantity, 0)
                     .toFixed(2)}
                 </p>

@@ -7,9 +7,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 export const ShippingForm = ({
   setShippingForm,
 }: {
-  setShippingForm: React.Dispatch<
-    React.SetStateAction<ShippingFormInputs | null>
-  >;
+  setShippingForm: (data: ShippingFormInputs) => void;
 }) => {
   const {
     register,
