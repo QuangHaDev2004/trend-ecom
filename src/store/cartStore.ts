@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 const useCartStore = create<CartStoreStateType & CartStoreActionsType>()(
   persist(
     (set) => ({
+      hasHydrated: false, // đồng bộ dữ liệu xong?
       cart: [],
       addToCart: (product) =>
         set((state) => {
@@ -41,6 +42,11 @@ const useCartStore = create<CartStoreStateType & CartStoreActionsType>()(
     {
       name: "cart",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.hasHydrated = true;
+        }
+      },
     },
   ),
 );
